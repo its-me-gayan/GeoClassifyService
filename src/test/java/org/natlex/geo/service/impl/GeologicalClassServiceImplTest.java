@@ -10,8 +10,10 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.natlex.geo.dto.GeologicalClassRequestDto;
+import org.natlex.geo.dto.GeologicalClassUpdateRequest;
 import org.natlex.geo.dto.generic.GenericResponse;
 import org.natlex.geo.entity.GeologicalClass;
+import org.natlex.geo.entity.Section;
 import org.natlex.geo.exception.EntityExistException;
 import org.natlex.geo.exception.NoContentFoundException;
 import org.natlex.geo.exception.ValidationFailedException;
@@ -72,7 +74,7 @@ private GeologicalClassRequestDto classRequestDto;
     }
 
     @Test
-    void addGeologicalClass_Success_Test() throws Exception {
+    void test_addGeologicalClass_Success() throws Exception {
 
         Mockito.when( geoLogicalClassRepository.existsGeologicalClassByCodeAndStatusNot(Mockito.any(),Mockito.any()))
                 .thenReturn(Boolean.FALSE);
@@ -92,7 +94,7 @@ private GeologicalClassRequestDto classRequestDto;
     }
 
     @Test
-    void addGeologicalClass_Failed_GLClassAlreadyExists_Test() throws Exception {
+    void test_addGeologicalClass_Failed_GLClassAlreadyExists() throws Exception {
 
         Mockito.when( geoLogicalClassRepository.existsGeologicalClassByCodeAndStatusNot(Mockito.any(),Mockito.any()))
                 .thenReturn(Boolean.TRUE);
@@ -104,7 +106,7 @@ private GeologicalClassRequestDto classRequestDto;
 
     }
     @Test
-    void addGeologicalClass_Failed_GLClassNameAndCodeNotMatch_Test() throws Exception {
+    void test_addGeologicalClass_Failed_GLClassNameAndCodeNotMatch() throws Exception {
 
         Mockito.when( geoLogicalClassRepository.existsGeologicalClassByCodeAndStatusNot(Mockito.any(),Mockito.any()))
                 .thenReturn(Boolean.FALSE);
@@ -117,7 +119,7 @@ private GeologicalClassRequestDto classRequestDto;
     }
 
     @Test
-    void getAllGeologicalClass_Success_Test() throws Exception {
+    void test_getAllGeologicalClass_Success() throws Exception {
         Mockito.when(geoLogicalClassRepository.findAllByStatusNot(Mockito.any()))
                 .thenReturn(Collections.singletonList(geologicalClass));
         GenericResponse genericResponse = geologicalClassService.getAllGeologicalClass();
@@ -131,7 +133,7 @@ private GeologicalClassRequestDto classRequestDto;
         assertNotNull(genericResponse.getData());
     }
     @Test
-    void getAllGeologicalClass_NoContentFound_Test() {
+    void test_getAllGeologicalClass_NoContentFound() {
         Mockito.when(geoLogicalClassRepository.findAllByStatusNot(Mockito.any()))
                 .thenReturn(Collections.emptyList());
 
@@ -142,7 +144,7 @@ private GeologicalClassRequestDto classRequestDto;
     }
 
     @Test
-    void getGeologicalClassByCode_Success_Test() throws Exception {
+    void test_getGeologicalClassByCode_Success() throws Exception {
         Mockito.when(geoLogicalClassRepository.findGeologicalClassByCodeAndStatusNot(Mockito.any(),Mockito.any()))
                 .thenReturn(Optional.of(geologicalClass));
 
@@ -156,7 +158,7 @@ private GeologicalClassRequestDto classRequestDto;
         assertNotNull(genericResponse.getData());
     }
     @Test
-    void getGeologicalClassByCode_NoGeologicalClassFound_Test() throws Exception {
+    void test_getGeologicalClassByCode_NoGeologicalClassFound() throws Exception {
         Mockito.when(geoLogicalClassRepository.findGeologicalClassByCodeAndStatusNot(Mockito.any(),Mockito.any()))
                 .thenReturn(Optional.empty());
         EntityNotFoundException ex = assertThrows(EntityNotFoundException.class, () ->
@@ -166,10 +168,129 @@ private GeologicalClassRequestDto classRequestDto;
     }
 
     @Test
-    void updateGeologicalClass() {
+    void test_updateGeologicalClass_Success() throws Exception {
+        geologicalClass.setId("a7496d3e-09c6-4611-9a6b-fd51315377fa");
+        Mockito.when(geoLogicalClassRepository.findByIdAndStatusNot(Mockito.any(),Mockito.any()))
+                .thenReturn(Optional.of(geologicalClass));
+
+        Mockito.when(geoLogicalClassRepository.save(Mockito.any()))
+                .thenReturn(geologicalClass);
+
+        GeologicalClassUpdateRequest request = GeologicalClassUpdateRequest.builder()
+                .id("a7496d3e-09c6-4611-9a6b-fd51315377fa")
+                .status(Status.ACTIVE)
+                .name("geo-class 49")
+                .code("GL49").build();
+        GenericResponse genericResponse = geologicalClassService.updateGeologicalClass(request);
+        assertNotNull(genericResponse);
+        assertEquals("Operation executed successfully",genericResponse.getResponseMessage());
+        assertEquals("GeologicalClass update success",genericResponse.getResponseDescription());
+        assertEquals("000",genericResponse.getResponseCode());
+        assertEquals(HttpStatus.OK.value(),genericResponse.getHttpStatusCode());
+        assertTrue(genericResponse.isSuccess());
+        assertNotNull(genericResponse.getData());
     }
 
     @Test
-    void deleteGeologicalClass() {
+    void test_updateGeologicalClass_Failed_IdNotFound() throws Exception {
+        Mockito.when(geoLogicalClassRepository.findByIdAndStatusNot(Mockito.any(),Mockito.any()))
+                .thenReturn(Optional.empty());
+
+        GeologicalClassUpdateRequest request = GeologicalClassUpdateRequest.builder()
+                .id("a7496d3e-09c6-4611-9a6b-fd51315377fa")
+                .status(Status.ACTIVE)
+                .name("geo-class 49")
+                .code("GL49").build();
+
+        EntityNotFoundException ex = assertThrows(EntityNotFoundException.class, () ->
+                geologicalClassService.updateGeologicalClass(request));
+        assertEquals("Provided GeologicalClass not available in the system",ex.getLocalizedMessage());
+    }
+    @Test
+    void test_updateGeologicalClass_Failed_BindWithASection() throws Exception {
+        geologicalClass.setSections(Collections.singleton(Section.builder()
+                .id(UUID.randomUUID().toString())
+                .sectionId(10)
+                .status(Status.ACTIVE)
+                .createdAt(LocalDateTime.now())
+                .name("Section 10")
+                .build()));
+
+        Mockito.when(geoLogicalClassRepository.findByIdAndStatusNot(Mockito.any(),Mockito.any()))
+                .thenReturn(Optional.of(geologicalClass));
+
+        GeologicalClassUpdateRequest request = GeologicalClassUpdateRequest.builder()
+                .id("a7496d3e-09c6-4611-9a6b-fd51315377fa")
+                .status(Status.ACTIVE)
+                .name("geo-class 49")
+                .code("GL49").build();
+
+        ValidationFailedException ex = assertThrows(ValidationFailedException.class, () ->
+                geologicalClassService.updateGeologicalClass(request));
+        assertEquals("Cannot proceed requested geologicalClass as this is already bound with a section",ex.getLocalizedMessage());
+    }
+
+    @Test
+    void test_updateGeologicalClass_Failed_NameAndCodeNotMatching() throws Exception {
+
+        Mockito.when(geoLogicalClassRepository.findByIdAndStatusNot(Mockito.any(),Mockito.any()))
+                .thenReturn(Optional.of(geologicalClass));
+
+        GeologicalClassUpdateRequest request = GeologicalClassUpdateRequest.builder()
+                .id("a7496d3e-09c6-4611-9a6b-fd51315377fa")
+                .status(Status.ACTIVE)
+                .name("geo-class 49")
+                .code("GL59").build();
+
+        ValidationFailedException ex = assertThrows(ValidationFailedException.class, () ->
+                geologicalClassService.updateGeologicalClass(request));
+        assertEquals("Validation failure - GeologicalClass name and code is different",ex.getLocalizedMessage());
+    }
+
+
+    @Test
+    void test_deleteGeologicalClass_Success() throws Exception {
+        Mockito.when(geoLogicalClassRepository.findGeologicalClassByCodeAndStatusNot(Mockito.any(),Mockito.any()))
+                .thenReturn(Optional.of(geologicalClass));
+
+        Mockito.when(geoLogicalClassRepository.save(Mockito.any()))
+                .thenReturn(geologicalClass);
+        GenericResponse genericResponse = geologicalClassService.deleteGeologicalClass("GL39");
+        assertNotNull(genericResponse);
+        assertEquals("Operation executed successfully",genericResponse.getResponseMessage());
+        assertEquals("GeologicalClass deleted successfully",genericResponse.getResponseDescription());
+        assertEquals("000",genericResponse.getResponseCode());
+        assertEquals(HttpStatus.OK.value(),genericResponse.getHttpStatusCode());
+        assertTrue(genericResponse.isSuccess());
+        assertNotNull(genericResponse.getData());
+    }
+
+    @Test
+    void test_deleteGeologicalClass_Failed_CodeNotFound()   {
+        Mockito.when(geoLogicalClassRepository.findGeologicalClassByCodeAndStatusNot(Mockito.any(),Mockito.any()))
+                .thenReturn(Optional.empty());
+
+        EntityNotFoundException ex = assertThrows(EntityNotFoundException.class, () ->
+                geologicalClassService.deleteGeologicalClass("GL39"));
+
+        assertEquals("Provided GeologicalClass not available in the system",ex.getLocalizedMessage());
+    }
+
+    @Test
+    void test_deleteGeologicalClass_Failed_BindWithASection()   {
+        geologicalClass.setSections(Collections.singleton(Section.builder()
+                .id(UUID.randomUUID().toString())
+                .sectionId(10)
+                .status(Status.ACTIVE)
+                .createdAt(LocalDateTime.now())
+                .name("Section 10")
+                .build()));
+        Mockito.when(geoLogicalClassRepository.findGeologicalClassByCodeAndStatusNot(Mockito.any(),Mockito.any()))
+                .thenReturn(Optional.of(geologicalClass));
+
+        EntityExistException ex = assertThrows(EntityExistException.class, () ->
+                geologicalClassService.deleteGeologicalClass("GL39"));
+
+        assertEquals("Cannot proceed requested geologicalClass as this is already bound with a section",ex.getLocalizedMessage());
     }
 }

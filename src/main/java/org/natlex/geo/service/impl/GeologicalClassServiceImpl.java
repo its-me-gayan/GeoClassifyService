@@ -98,7 +98,7 @@ public class GeologicalClassServiceImpl implements GeologicalClassService {
                 .findByIdAndStatusNot(request.getId(), Status.DELETED)
                 .orElseThrow(() -> new EntityNotFoundException(ExceptionMessages.GL_CLASS_NOT_FOUND));
 
-       if(!geologicalClass.getSections().isEmpty()){
+       if(!CollectionUtils.isEmpty(geologicalClass.getSections())){
            throw new ValidationFailedException(ExceptionMessages.VAL_GL_CLASS_ALREADY_BIND);
        }
 
@@ -122,7 +122,7 @@ public class GeologicalClassServiceImpl implements GeologicalClassService {
     public GenericResponse deleteGeologicalClass(String code) throws Exception {
         GeologicalClass geologicalClass = geoLogicalClassRepository.findGeologicalClassByCodeAndStatusNot(code, Status.DELETED)
                 .orElseThrow(() -> new EntityNotFoundException(ExceptionMessages.GL_CLASS_NOT_FOUND));
-        if(!geologicalClass.getSections().isEmpty()){
+        if(!CollectionUtils.isEmpty(geologicalClass.getSections())){
             throw new EntityExistException(ExceptionMessages.VAL_GL_CLASS_ALREADY_BIND);
         }
         geologicalClass.setStatus(Status.DELETED);

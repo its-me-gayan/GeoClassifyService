@@ -1,7 +1,10 @@
 package org.natlex.geo.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.natlex.geo.util.Status;
 
 /**
@@ -11,6 +14,9 @@ import org.natlex.geo.util.Status;
  * Time: 11:09 PM
  */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class GeologicalClassUpdateRequest {
     @NotBlank
     private String id;

@@ -45,7 +45,6 @@ class SectionServiceImplTest {
 
     @Mock
     private SectionRepository sectionRepository;
-    private  GeoLogicalClassRepository geoLogicalClassRepository;
 
     @Spy
     private  ResponseGenerator responseGenerator;
@@ -72,7 +71,7 @@ class SectionServiceImplTest {
     }
 
     @Test
-    void addSection_Success_Test() throws Exception {
+    void test_addSection_Success() throws Exception {
             Mockito.when(sectionRepository.findSectionBySectionIdAndStatusNot(Mockito.anyInt() , Mockito.any()))
                     .thenReturn(Optional.empty());
 
@@ -98,7 +97,7 @@ class SectionServiceImplTest {
     }
 
     @Test
-    void addSection_Failed_SectionNameFormat_Test() {
+    void test_addSection_Failed_SectionNameFormat() {
         SectionRequest sectionRequest = SectionRequest
                 .builder()
                 .name("section xy")
@@ -112,7 +111,7 @@ class SectionServiceImplTest {
     }
 
     @Test
-    void getAllSections_Success_Test() throws Exception {
+    void test_getAllSections_Success() throws Exception {
 
         Mockito.when(sectionRepository.findAllSectionByStatusNot(Mockito.any()))
                         .thenReturn(
@@ -131,7 +130,7 @@ class SectionServiceImplTest {
     }
 
     @Test
-    void getAllSections_NoContentFound_Test() {
+    void test_getAllSections_NoContentFound() {
 
         Mockito.when(sectionRepository.findAllSectionByStatusNot(Mockito.any()))
                 .thenReturn(Mockito.anyList());
@@ -140,7 +139,7 @@ class SectionServiceImplTest {
     }
 
     @Test
-    void deleteSection_Success_Test() throws Exception {
+    void test_deleteSection_Success() throws Exception {
         Mockito.when(sectionRepository.save(Mockito.any()))
                 .thenReturn(section);
 
@@ -163,7 +162,7 @@ class SectionServiceImplTest {
     }
 
     @Test
-    void deleteSection_Failed_SectionNotFound_Test(){
+    void test_deleteSection_Failed_SectionNotFound(){
 
         Mockito.when(sectionRepository.findSectionByIdAndStatusNot(Mockito.any(),Mockito.any()))
                 .thenReturn(Optional.empty());
@@ -174,7 +173,7 @@ class SectionServiceImplTest {
     }
 
     @Test
-    void getAllSectionsByGeoLocCode_Success_Test() throws Exception {
+    void test_getAllSectionsByGeoLocCode_Success() throws Exception {
         Mockito.when(sectionRepository.findActiveSectionsWithActiveGeologicalClassesByGeoLocCode("GL01"))
                 .thenReturn(Collections.singletonList(section));
 
@@ -190,7 +189,7 @@ class SectionServiceImplTest {
     }
 
     @Test
-    void getAllSectionsByGeoLocCode_NoContentFound_Test() throws Exception {
+    void test_getAllSectionsByGeoLocCode_NoContentFound() throws Exception {
         Mockito.when(sectionRepository.findActiveSectionsWithActiveGeologicalClassesByGeoLocCode("GL01"))
                 .thenReturn(Collections.emptyList());
 
@@ -199,7 +198,7 @@ class SectionServiceImplTest {
     }
 
     @Test
-    void updateSection_Success_Test() throws Exception {
+    void test_updateSection_Success() throws Exception {
         section.setId("1ca62bd0-956c-4dfb-941e-e335280ac5cf");
         Mockito.when(sectionRepository.findSectionByIdAndStatusNot(Mockito.any() , Mockito.any()))
                 .thenReturn(Optional.of(section));
@@ -224,7 +223,7 @@ class SectionServiceImplTest {
     }
 
     @Test
-    void updateSection_Failed_SectionIdNotFound_Test() throws Exception {
+    void test_updateSection_Failed_SectionIdNotFound() throws Exception {
         Mockito.when(sectionRepository.findSectionByIdAndStatusNot(Mockito.any() , Mockito.any()))
                 .thenReturn(Optional.empty());
 

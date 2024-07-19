@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -28,6 +30,25 @@ public class ResponseGenerator {
                 .data(data)
                 .httpStatusCode(status.value())
                 .isSuccess(Boolean.TRUE)
+                .build();
+    }
+
+    public GenericResponse generateErrorExceptionResponse(String responseMessage , String responseMessageDescription,HttpStatus status) {
+        return generateErrorResponse(responseMessage,responseMessageDescription,status, Collections.emptyList());
+    }
+    public GenericResponse generateErrorExceptionResponse(String responseMessage , String responseMessageDescription,HttpStatus status,List<String> fieldErrors) {
+        return generateErrorResponse(responseMessage,responseMessageDescription,status, fieldErrors);
+    }
+
+    private GenericResponse generateErrorResponse(String responseMessage , String responseMessageDescription, HttpStatus status, List<String> fieldErrors){
+        return GenericResponse.builder()
+                .fieldError(fieldErrors)
+                .responseDescription(responseMessageDescription)
+                .responseMessage(responseMessage)
+                .isSuccess(false)
+                .responseCode("999")
+                .timestamp(LocalDateTime.now())
+                .httpStatusCode(status.value())
                 .build();
     }
 }

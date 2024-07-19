@@ -4,7 +4,9 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.natlex.geo.dto.generic.GenericResponse;
+import org.natlex.geo.helper.ResponseGenerator;
 import org.natlex.geo.util.ResponseMessages;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -29,6 +31,9 @@ import java.util.Set;
  */
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @Autowired
+    private ResponseGenerator responseGenerator;
     /**
      * Constraint violation exception handler
      *
@@ -43,16 +48,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         constraintViolations.forEach(constraintViolation -> {
             errorList.add("parameter "+constraintViolation.getPropertyPath().toString()+" "+ (StringUtils.hasText(constraintViolation.getMessage()) ?constraintViolation.getMessage() : null));
         });
-        // Return a BAD_REQUEST response with the validation errors
-        GenericResponse requestProcessingFailed = GenericResponse.builder()
-                .fieldError(errorList)
-                .responseDescription(ResponseMessages.REQUEST_PROC_FAILED_DUE_VAL)
-                .responseMessage(ResponseMessages.REQUEST_PROC_FAILED)
-                .isSuccess(false)
-                .responseCode("999")
-                .timestamp(LocalDateTime.now())
-                .httpStatusCode(HttpStatus.BAD_REQUEST.value())
-                .build();
+
+        GenericResponse requestProcessingFailed = responseGenerator.generateErrorExceptionResponse(
+                ResponseMessages.REQUEST_PROC_FAILED,
+                ResponseMessages.REQUEST_PROC_FAILED_DUE_VAL,
+                HttpStatus.BAD_REQUEST,
+                errorList
+        );
         return ResponseEntity.status(requestProcessingFailed.getHttpStatusCode()).body(requestProcessingFailed);
     }
 
@@ -64,42 +66,32 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 errorList.add("field "+error.getField()+" "+error.getDefaultMessage())
         );
 
-        // Return a BAD_REQUEST response with the validation errors
-        GenericResponse requestProcessingFailed = GenericResponse.builder()
-                .fieldError(errorList)
-                .responseDescription(ResponseMessages.REQUEST_PROC_FAILED_DUE_VAL)
-                .responseMessage(ResponseMessages.REQUEST_PROC_FAILED)
-                .isSuccess(false)
-                .responseCode("999")
-                .timestamp(LocalDateTime.now())
-                .httpStatusCode(HttpStatus.BAD_REQUEST.value())
-                .build();
+        GenericResponse requestProcessingFailed = responseGenerator.generateErrorExceptionResponse(
+                ResponseMessages.REQUEST_PROC_FAILED,
+                ResponseMessages.REQUEST_PROC_FAILED_DUE_VAL,
+                HttpStatus.BAD_REQUEST,
+                errorList
+        );
         return ResponseEntity.status(requestProcessingFailed.getHttpStatusCode()).body(requestProcessingFailed);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<GenericResponse> handleEntityNotFountException(EntityNotFoundException ex){
-        GenericResponse requestProcessingFailed = GenericResponse.builder()
-                .responseDescription(ex.getLocalizedMessage())
-                .responseMessage(ResponseMessages.REQUEST_PROC_FAILED)
-                .isSuccess(false)
-                .responseCode("999")
-                .timestamp(LocalDateTime.now())
-                .httpStatusCode(HttpStatus.BAD_REQUEST.value())
-                .build();
+        GenericResponse requestProcessingFailed = responseGenerator.generateErrorExceptionResponse(
+                ResponseMessages.REQUEST_PROC_FAILED,
+                ex.getLocalizedMessage(),
+                HttpStatus.BAD_REQUEST
+        );
         return ResponseEntity.status(requestProcessingFailed.getHttpStatusCode()).body(requestProcessingFailed);
     }
 
     @ExceptionHandler(EntityExistException.class)
     public ResponseEntity<GenericResponse> handleEntityExistException(EntityExistException ex){
-        GenericResponse requestProcessingFailed = GenericResponse.builder()
-                .responseDescription(ex.getLocalizedMessage())
-                .responseMessage(ResponseMessages.REQUEST_PROC_FAILED)
-                .isSuccess(false)
-                .responseCode("999")
-                .timestamp(LocalDateTime.now())
-                .httpStatusCode(HttpStatus.BAD_REQUEST.value())
-                .build();
+        GenericResponse requestProcessingFailed = responseGenerator.generateErrorExceptionResponse(
+                ResponseMessages.REQUEST_PROC_FAILED,
+                ex.getLocalizedMessage(),
+                HttpStatus.BAD_REQUEST
+        );
         return ResponseEntity.status(requestProcessingFailed.getHttpStatusCode()).body(requestProcessingFailed);
     }
 
@@ -110,27 +102,21 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ValidationFailedException.class)
     public ResponseEntity<GenericResponse> handleValidationFailedException(ValidationFailedException ex){
-        GenericResponse requestProcessingFailed = GenericResponse.builder()
-                .responseDescription(ex.getLocalizedMessage())
-                .responseMessage(ResponseMessages.REQUEST_PROC_FAILED)
-                .isSuccess(false)
-                .responseCode("999")
-                .timestamp(LocalDateTime.now())
-                .httpStatusCode(HttpStatus.BAD_REQUEST.value())
-                .build();
+        GenericResponse requestProcessingFailed = responseGenerator.generateErrorExceptionResponse(
+                ResponseMessages.REQUEST_PROC_FAILED,
+                ex.getLocalizedMessage(),
+                HttpStatus.BAD_REQUEST
+        );
         return ResponseEntity.status(requestProcessingFailed.getHttpStatusCode()).body(requestProcessingFailed);
     }
 
     @ExceptionHandler(FileExportFailedException.class)
     public ResponseEntity<GenericResponse> handleValidationFailedException(FileExportFailedException ex){
-        GenericResponse requestProcessingFailed = GenericResponse.builder()
-                .responseDescription(ex.getLocalizedMessage())
-                .responseMessage(ResponseMessages.REQUEST_PROC_FAILED)
-                .isSuccess(false)
-                .responseCode("999")
-                .timestamp(LocalDateTime.now())
-                .httpStatusCode(HttpStatus.BAD_GATEWAY.value())
-                .build();
+        GenericResponse requestProcessingFailed = responseGenerator.generateErrorExceptionResponse(
+                ResponseMessages.REQUEST_PROC_FAILED,
+                ex.getLocalizedMessage(),
+                HttpStatus.BAD_GATEWAY
+        );
         return ResponseEntity.status(requestProcessingFailed.getHttpStatusCode()).body(requestProcessingFailed);
     }
 }
