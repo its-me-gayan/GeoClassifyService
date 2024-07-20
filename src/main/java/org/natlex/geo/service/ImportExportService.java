@@ -12,7 +12,7 @@ import java.io.InputStream;
  * Time: 6:21 PM
  */
 public interface ImportExportService {
-    GenericResponse importFile(InputStream inputStream)throws Exception;
+    GenericResponse importFile(InputStream inputStream,String originalName)throws Exception;
     GenericResponse initiateExportJob()throws Exception;
     GenericResponse getImportJobStatusById(Long jobId)throws Exception;
 

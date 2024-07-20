@@ -20,4 +20,6 @@ public class ExceptionMessages {
     public static final String IMPORT_FAILED_INVALID_JOB_ID ="Import failed -> no valid job id found";
     public static final String VAL_EXPORT_FAILED_NO_SECTIONS ="Export Failed - No valid sections are found to export";
     public static final String VAL_IMPORT_FAILED_NO_SECTIONS ="Import Failed - No valid sections are found to import";
+    public static final String VAL_IMPORT_FAILED_FILE_STREAM_NULL ="Import Failed - Invalid file or file input stream null";
+    public static final String VAL_IMPORT_FAILED_EXTENSION_NOT_SUP ="File type extension is not supporting";
 }

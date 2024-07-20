@@ -2,6 +2,7 @@ package org.natlex.geo.dto;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 import org.natlex.geo.util.Status;
 
 /**
@@ -12,6 +13,7 @@ import org.natlex.geo.util.Status;
  */
 @Builder
 @Data
+@ToString
 public class ExportJobResultDto {
     private byte[] file;
     private String headerKey;

@@ -140,7 +140,7 @@ public class ExcelFileHandler implements FileHandler {
 
     @Override
     public String getFileExtension() {
-        return "xlxs";
+        return "xlsx";
     }
 
     private Section getSectionEntityFromId(String sectionName) {

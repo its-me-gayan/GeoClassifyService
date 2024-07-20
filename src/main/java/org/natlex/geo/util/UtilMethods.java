@@ -28,6 +28,6 @@ public class UtilMethods {
 
     public static String determineFileName(){
         String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        return  "geo-classify_"+date+"_"+System.nanoTime()+".xlsx";
+        return  "geo-classify_"+date+"_"+System.nanoTime();
     }
 }

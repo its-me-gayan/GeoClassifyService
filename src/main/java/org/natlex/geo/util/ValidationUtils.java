@@ -1,6 +1,7 @@
 package org.natlex.geo.util;
 
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.natlex.geo.exception.ValidationFailedException;
 
@@ -94,5 +95,10 @@ public class ValidationUtils {
             }
         }
         return validity;
+    }
+
+    public static boolean isSupportedExtension(String extension) {
+        return !StringUtils.isEmpty(extension)&& (
+                extension.equals("xlxs"));
     }
 }

@@ -26,7 +26,7 @@ private final ImportExportService importExportService;
     @PostMapping("/import")
     public ResponseEntity<GenericResponse> importSections(@RequestParam("file") MultipartFile file) throws Exception {
         return ResponseUtil
-                .buildResponse(importExportService.importFile(file.getInputStream()));
+                .buildResponse(importExportService.importFile(file.getInputStream(),file.getOriginalFilename()));
     }
 
     @GetMapping("/import/{id}")

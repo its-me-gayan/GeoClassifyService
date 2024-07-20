@@ -57,6 +57,8 @@ public class ImportExportAsyncServiceImpl implements ImportExportAsyncService {
     @Override
     public void createAndSubmitFileImportAsyncJob(InputStream inputStream, Long jobId) {
         log.info("File import job scheduled and running");
+
+
         ImportJob importJob = importJobRepository.findById(jobId)
                 .orElseThrow(() -> new EntityNotFoundException(ExceptionMessages.IMPORT_FAILED_INVALID_JOB_ID));
         try {
@@ -95,7 +97,7 @@ public class ImportExportAsyncServiceImpl implements ImportExportAsyncService {
 
             byte[] bytes = fileHandler.exportFile(sectionList);
 
-            exportJob.setFileName(UtilMethods.determineFileName());
+            exportJob.setFileName(UtilMethods.determineFileName()+"."+fileHandler.getFileExtension());
             exportJob.setFile(bytes);
             exportJob.setStatus(JobStatus.DONE);
             exportMessage = ResponseMessages.FILE_EXPORT_SUCCESS;

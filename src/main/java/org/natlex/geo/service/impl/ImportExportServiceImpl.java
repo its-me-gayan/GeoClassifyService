@@ -8,6 +8,7 @@ import org.natlex.geo.dto.generic.GenericResponse;
 import org.natlex.geo.entity.ExportJob;
 import org.natlex.geo.entity.ImportJob;
 import org.natlex.geo.exception.FileExportFailedException;
+import org.natlex.geo.exception.ValidationFailedException;
 import org.natlex.geo.helper.EntityToDtoMapper;
 import org.natlex.geo.helper.ResponseGenerator;
 import org.natlex.geo.repository.ExportJobRepository;
@@ -17,12 +18,14 @@ import org.natlex.geo.service.ImportExportService;
 import org.natlex.geo.util.ExceptionMessages;
 import org.natlex.geo.util.JobStatus;
 import org.natlex.geo.util.ResponseMessages;
+import org.natlex.geo.util.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * Author: Gayan Sanjeewa
@@ -40,7 +43,16 @@ public class ImportExportServiceImpl implements ImportExportService {
     private final ResponseGenerator responseGenerator;
     private final EntityToDtoMapper entityToDtoMapper;
     @Override
-    public GenericResponse importFile(InputStream inputStream) throws Exception {
+    public GenericResponse importFile(InputStream inputStream,String originalName) throws Exception {
+
+        if(!ValidationUtils.isSupportedExtension(originalName)){
+            throw new ValidationFailedException(ExceptionMessages.VAL_IMPORT_FAILED_EXTENSION_NOT_SUP);
+        }
+
+        if(Objects.isNull(inputStream)){
+            throw new ValidationFailedException(ExceptionMessages.VAL_IMPORT_FAILED_FILE_STREAM_NULL);
+        }
+
         ImportJob importJob = ImportJob.builder()
                 .status(JobStatus.IN_PROGRESS)
                 .createdAt(LocalDateTime.now())
