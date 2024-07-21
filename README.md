@@ -10,6 +10,8 @@ Java 21 , Spring boot 3 , H2 , Data JPA , Docker , Apache POI , Swagger 3 ,  Uni
 
 ## API Document and Collections
 
+[Download Minion](unit-test-screenshot.png "download")
+
 Swagger Documentation - http://localhost:8080/swagger-ui/index.html
 
 Postman collection
