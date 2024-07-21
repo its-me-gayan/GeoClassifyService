@@ -1,0 +1,123 @@
+apiVersion: apps/v1
+kind: Deployment # Kubernetes resource kind we are creating
+metadata:
+  name: geo-classify-test
+spec:
+  selector:
+    matchLabels:
+      app: geo-classify-test
+  replicas: 2 # Number of replicas that will be created for this deployment
+  template:
+    metadata:
+      labels:
+        app: geo-classify-test
+    spec:
+      containers:
+        - env:
+          volumeMounts:
+            - name: application-config
+              mountPath: "/deployments/config"
+              readOnly: true
+      volumes:
+        - name: application-config
+          configMap:
+            name: geo-classify-test-cm
+            items:
+              - key: application.yaml
+                path: application.yaml
+        - name: geo-classify
+          image: geo-classify:1.0.0
+          # Image that will be used to containers in the cluster
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8181
+          resources:
+            limits:
+              memory: 500Mi
+              cpu: 1
+            requests:
+              memory: 500Mi
+              cpu: 1
+# The port that the container is running on in the cluster
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: geo-classify-test-cm
+data:
+  application.yaml: |
+    server:
+      port: 8080
+    shutdown: graceful
+
+    datasource:
+      username: sa
+      url: jdbc:h2:mem:testdb
+      driverClassName: org.h2.Driver
+      password: sa
+    jpa:
+      database-platform: org.hibernate.dialect.H2Dialect
+    h2:
+      console.enabled: true
+
+
+    spring:
+      lifecycle:
+        timeout-per-shutdown-phase: 1m
+      jpa:
+        properties:
+          hibernate:
+            order_inserts: true
+            jdbc:
+              batch_size: 10
+---
+apiVersion: v1 # Kubernetes API version
+kind: Service # Kubernetes resource kind we are creating
+metadata: # Metadata of the resource kind we are creating
+  name: geo-classify-test-svc
+spec:
+  selector:
+    app: geo-classify-test
+  ports:
+    - protocol: "TCP"
+      port: 8181 # The port that the service is running on in the cluster
+      targetPort: 8181 # The port exposed by the service
+  type: LoadBalancer # type of the service.
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: geo-classify-test-ingress
+spec:
+  rules:
+    - host: geo-classify.test.local
+      http:
+        paths:
+          - backend:
+              service:
+                name: geo-classify-test-svc
+                port:
+                  number: 8181
+            path: /
+            pathType: Prefix
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: geo-classify-test-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: geo-classify-test
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 60
