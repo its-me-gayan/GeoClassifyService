@@ -89,7 +89,7 @@ class ImportExportServiceImplTest {
                 .thenReturn(importJob);
 
         InputStream inputStream = new ByteArrayInputStream(new byte[]{1, 2});
-        GenericResponse genericResponse = importExportService.importFile(inputStream, "xlxs");
+        GenericResponse genericResponse = importExportService.importFile(inputStream, "test.xlsx");
 
         assertNotNull(genericResponse);
         assertEquals("Operation executed successfully", genericResponse.getResponseMessage());
@@ -104,7 +104,7 @@ class ImportExportServiceImplTest {
     @Test
     void test_importFile_Failed_NullOrInvalidFileStream() throws Exception {
         ValidationFailedException ex = assertThrows(ValidationFailedException.class, () ->
-                importExportService.importFile(null, "xlxs"));
+                importExportService.importFile(null, "test.xlsx"));
 
         assertEquals("Import Failed - Invalid file or file input stream null",ex.getLocalizedMessage());
     }
@@ -112,7 +112,7 @@ class ImportExportServiceImplTest {
     @Test
     void test_importFile_Failed_InvalidFileTypeExtension() throws Exception {
         ValidationFailedException ex = assertThrows(ValidationFailedException.class, () ->
-                importExportService.importFile(new ByteArrayInputStream(new byte[]{1, 2}), "pdf"));
+                importExportService.importFile(new ByteArrayInputStream(new byte[]{1, 2}), "test.pdf"));
 
         assertEquals("File type extension is not supporting",ex.getLocalizedMessage());
     }

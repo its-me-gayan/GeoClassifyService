@@ -119,4 +119,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         );
         return ResponseEntity.status(requestProcessingFailed.getHttpStatusCode()).body(requestProcessingFailed);
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<GenericResponse> handleCommonException(Exception ex){
+        GenericResponse requestProcessingFailed = responseGenerator.generateErrorExceptionResponse(
+                ResponseMessages.REQUEST_PROC_FAILED,
+                ex.getLocalizedMessage(),
+                HttpStatus.BAD_REQUEST
+        );
+        return ResponseEntity.status(requestProcessingFailed.getHttpStatusCode()).body(requestProcessingFailed);
+    }
 }

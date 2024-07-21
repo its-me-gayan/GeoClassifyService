@@ -5,6 +5,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.natlex.geo.exception.ValidationFailedException;
 
+import java.util.Arrays;
+
 /**
  * Author: Gayan Sanjeewa
  * User: gayan
@@ -44,8 +46,6 @@ public class ValidationUtils {
             String codeNumber = code.substring(2);
             String extractedSectionNumberFromCode = codeNumber.substring(0,String.valueOf(sectionNumber).length());
             String extractedSectionNumberFromName = nameNumber.substring(0,String.valueOf(sectionNumber).length());
-            System.out.println("extractedSectionNumberFromCode " + extractedSectionNumberFromCode);
-            System.out.println("extractedSectionNumberFromName " + extractedSectionNumberFromName);
             return NumberUtils.isCreatable(nameNumber) && NumberUtils.isCreatable(codeNumber) &&
                     (
                             (sectionNumber == Integer.parseInt(extractedSectionNumberFromCode)) &&
@@ -98,7 +98,11 @@ public class ValidationUtils {
     }
 
     public static boolean isSupportedExtension(String extension) {
-        return !StringUtils.isEmpty(extension)&& (
-                extension.equals("xlxs"));
+        if(StringUtils.isEmpty(extension)){
+            return false;
+        }
+        String[] split = extension.split("\\.");
+        return !StringUtils.isEmpty(split[1])&& (
+                split[1].equals("xlsx"));
     }
 }
