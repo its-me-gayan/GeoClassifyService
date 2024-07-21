@@ -4,7 +4,7 @@ server:
 
   datasource:
     username: sa
-    url: jdbc:h2:mem:testdb
+    url: jdbc:h2:mem:geo-data
     driverClassName: org.h2.Driver
     password: sa
   jpa:
