@@ -21,6 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import utils.TestAuthUtil;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -85,6 +86,7 @@ class SectionControllerIntegrationTest {
                 .thenReturn(section);
 
         mockMvc.perform(post("/api/v1/section")
+                        .headers(TestAuthUtil.getAuthHeader())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(sectionRequestGenericRequest)))
                 .andExpect(status().isCreated())
@@ -108,6 +110,7 @@ class SectionControllerIntegrationTest {
                 .thenReturn(section);
 
         mockMvc.perform(post("/api/v1/section")
+                        .headers(TestAuthUtil.getAuthHeader())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(sectionRequestGenericRequest)))
                 .andExpect(status().isBadRequest())

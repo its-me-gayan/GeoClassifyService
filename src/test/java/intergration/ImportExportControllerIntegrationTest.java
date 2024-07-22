@@ -2,8 +2,6 @@ package intergration;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.natlex.geo.GeoClassifyServiceRunner;
@@ -14,17 +12,16 @@ import org.natlex.geo.repository.ExportJobRepository;
 import org.natlex.geo.repository.ImportJobRepository;
 import org.natlex.geo.service.ImportExportAsyncService;
 import org.natlex.geo.service.ImportExportService;
-import org.natlex.geo.service.impl.ImportExportServiceImpl;
 import org.natlex.geo.util.JobStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import utils.TestAuthUtil;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -75,7 +72,8 @@ public class ImportExportControllerIntegrationTest {
 
         Mockito.when(exportJobRepository.findById(Mockito.any()))
                 .thenReturn(Optional.of(exportJob));
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/export/1/file"))
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/export/1/file")
+                        .headers(TestAuthUtil.getAuthHeader()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.header().string("Content-Disposition", "attachment;filename=test.xlsx"))
                 .andReturn();
