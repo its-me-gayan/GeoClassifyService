@@ -11,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -120,8 +121,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(requestProcessingFailed.getHttpStatusCode()).body(requestProcessingFailed);
     }
 
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<GenericResponse> handleAuthenticationException(AuthenticationException ex){
+        GenericResponse requestProcessingFailed = responseGenerator.generateErrorExceptionResponse(
+                ResponseMessages.REQUEST_PROC_FAILED,
+                ex.getLocalizedMessage(),
+                HttpStatus.UNAUTHORIZED
+        );
+        return ResponseEntity.status(requestProcessingFailed.getHttpStatusCode()).body(requestProcessingFailed);
+    }
     @ExceptionHandler(Exception.class)
     public ResponseEntity<GenericResponse> handleCommonException(Exception ex){
+        ex.printStackTrace();
         GenericResponse requestProcessingFailed = responseGenerator.generateErrorExceptionResponse(
                 ResponseMessages.REQUEST_PROC_FAILED,
                 ex.getLocalizedMessage(),
