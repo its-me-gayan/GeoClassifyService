@@ -21,8 +21,12 @@ import org.natlex.geo.util.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -42,6 +46,7 @@ public class GeologicalClassServiceImpl implements IGeologicalClassService {
     private final IEntityToDtoMapper entityToDtoMapper;
     private final IDtoToEntityMapper dtoToEntityMapper;
     @Override
+    @Transactional(propagation = Propagation.REQUIRED , isolation = Isolation.READ_COMMITTED,rollbackFor = SQLException.class)
     public GenericResponse addGeologicalClass(GeologicalClassRequestDto request) throws Exception {
 
         if(geoLogicalClassRepository.existsGeologicalClassByCodeAndStatusNot(request.getCode(), Status.DELETED)){
@@ -65,6 +70,7 @@ public class GeologicalClassServiceImpl implements IGeologicalClassService {
 
     }
     @Override
+    @Transactional(readOnly = true)
     public GenericResponse getAllGeologicalClass() throws Exception {
         List<GeologicalClass> allStatusNot = geoLogicalClassRepository.findAllByStatusNot(Status.DELETED);
         if(CollectionUtils.isEmpty(allStatusNot)){
@@ -78,6 +84,7 @@ public class GeologicalClassServiceImpl implements IGeologicalClassService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public GenericResponse getGeologicalClassByCode(String code) throws Exception {
         GeologicalClass geologicalClass = geoLogicalClassRepository
                 .findGeologicalClassByCodeAndStatusNot(code, Status.DELETED)
@@ -91,6 +98,7 @@ public class GeologicalClassServiceImpl implements IGeologicalClassService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED , isolation = Isolation.READ_COMMITTED,rollbackFor = SQLException.class)
     public GenericResponse updateGeologicalClass(GeologicalClassUpdateRequest request) throws Exception {
         GeologicalClass geologicalClass = geoLogicalClassRepository
                 .findByIdAndStatusNot(request.getId(), Status.DELETED)
@@ -117,6 +125,7 @@ public class GeologicalClassServiceImpl implements IGeologicalClassService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED , isolation = Isolation.READ_COMMITTED,rollbackFor = SQLException.class)
     public GenericResponse deleteGeologicalClass(String code) throws Exception {
         GeologicalClass geologicalClass = geoLogicalClassRepository.findGeologicalClassByCodeAndStatusNot(code, Status.DELETED)
                 .orElseThrow(() -> new EntityNotFoundException(ExceptionMessages.GL_CLASS_NOT_FOUND));

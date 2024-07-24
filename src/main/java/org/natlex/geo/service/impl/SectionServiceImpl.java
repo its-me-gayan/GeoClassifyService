@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -46,7 +47,7 @@ public class SectionServiceImpl implements ISectionService {
     private final IEntityToDtoMapper entityToDtoMapper;
     private final IDtoToEntityMapper dtoToEntityMapper;
 
-    @Transactional(isolation = Isolation.SERIALIZABLE,propagation = Propagation.REQUIRED)
+    @Transactional(isolation = Isolation.READ_COMMITTED,propagation = Propagation.REQUIRED,rollbackFor = SQLException.class)
     @Override
     public GenericResponse addSection(SectionRequest sectionRequest) throws Exception {
 
@@ -116,7 +117,7 @@ public class SectionServiceImpl implements ISectionService {
 
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE,propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED , isolation = Isolation.READ_COMMITTED,rollbackFor = SQLException.class)
     @Override
     public GenericResponse deleteSection(String id) throws Exception {
 
@@ -149,7 +150,7 @@ public class SectionServiceImpl implements ISectionService {
                 HttpStatus.OK
         );
     }
-    @Transactional(isolation = Isolation.SERIALIZABLE,propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED , isolation = Isolation.READ_COMMITTED,rollbackFor = SQLException.class)
     @Override
     public GenericResponse updateSection(SectionUpdateRequest sectionUpdateRequest) throws Exception {
 

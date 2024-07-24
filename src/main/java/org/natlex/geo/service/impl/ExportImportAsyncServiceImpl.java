@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.io.*;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -41,12 +42,11 @@ public class ExportImportAsyncServiceImpl implements IExportImportAsyncService {
     private final IFileHandler fileHandler;
 
 
-    @Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
+    @Transactional(isolation = Isolation.READ_COMMITTED,propagation = Propagation.REQUIRED,rollbackFor = SQLException.class)
     @Async
     @Override
     public void createAndSubmitFileImportAsyncJob(InputStream inputStream, Long jobId) {
         log.info("File import job scheduled and running");
-
 
         ImportJob importJob = importJobRepository.findById(jobId)
                 .orElseThrow(() -> new EntityNotFoundException(ExceptionMessages.IMPORT_FAILED_INVALID_JOB_ID));
@@ -72,7 +72,7 @@ public class ExportImportAsyncServiceImpl implements IExportImportAsyncService {
 
     @Async
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE,propagation = Propagation.REQUIRED)
+    @Transactional(isolation = Isolation.READ_COMMITTED,propagation = Propagation.REQUIRED,rollbackFor = SQLException.class)
     public void createAndSubmitFileExportAsyncJob(Long jobId) {
         String exportMessage;
         ExportJob exportJob = exportJobRepository.findById(jobId)

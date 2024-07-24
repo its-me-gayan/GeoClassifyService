@@ -19,10 +19,15 @@ import org.natlex.geo.util.JobStatus;
 import org.natlex.geo.util.ResponseMessages;
 import org.natlex.geo.util.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -42,6 +47,7 @@ public class ExportImportServiceImpl implements IExportImportService {
     private final IResponseGenerator responseGenerator;
     private final IEntityToDtoMapper entityToDtoMapper;
     @Override
+    @Transactional(propagation = Propagation.REQUIRED , isolation = Isolation.READ_COMMITTED,rollbackFor = SQLException.class)
     public GenericResponse importFile(InputStream inputStream,String originalName) throws Exception {
 
         if(!ValidationUtils.isSupportedExtension(originalName)){
@@ -67,6 +73,7 @@ public class ExportImportServiceImpl implements IExportImportService {
                 HttpStatus.ACCEPTED);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED , isolation = Isolation.READ_COMMITTED,rollbackFor = SQLException.class)
     @Override
     public GenericResponse initiateExportJob() throws Exception {
         ExportJob exportJob = ExportJob.builder()
@@ -83,6 +90,7 @@ public class ExportImportServiceImpl implements IExportImportService {
                 HttpStatus.ACCEPTED);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public GenericResponse getImportJobStatusById(Long jobId) throws Exception {
         ImportJob importJob = importJobRepository
@@ -94,6 +102,7 @@ public class ExportImportServiceImpl implements IExportImportService {
                 HttpStatus.OK);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public ExportJobResultDto getExportedFileByJobId(Long jobId) throws Exception {
 
@@ -115,6 +124,7 @@ public class ExportImportServiceImpl implements IExportImportService {
 
     }
 
+    @Transactional(readOnly = true)
     @Override
     public GenericResponse getExportJobByJobId(Long jobId) throws Exception {
         ExportJob exportJob = exportJobRepository
