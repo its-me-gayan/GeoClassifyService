@@ -22,3 +22,9 @@ spring:
         order_inserts: true
         jdbc:
           batch_size: 10
+
+app:
+  auth:
+    user: admin
+    password: MTIzNA==
+    roles: ADMIN,USER

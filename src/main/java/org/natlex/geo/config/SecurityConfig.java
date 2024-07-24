@@ -1,6 +1,7 @@
 package org.natlex.geo.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -10,6 +11,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
+import java.util.Arrays;
+import java.util.Base64;
 
 /**
  * Author: Gayan Sanjeewa
@@ -22,6 +26,12 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
+    @Value("${app.auth.user}")
+    private String user;
+    @Value("${app.auth.password}")
+    private String password;
+    @Value("${app.auth.roles}")
+    private String[] roles;
 
     private final RestAuthenticationEntryPoint authenticationEntryPoint;
 
@@ -54,9 +64,9 @@ public class SecurityConfig {
     public void configureGlobal(AuthenticationManagerBuilder auth, PasswordEncoder passwordEncoder) throws Exception {
         auth.inMemoryAuthentication()
                 .passwordEncoder(passwordEncoder())
-                .withUser("admin")
-                .password(passwordEncoder().encode("1234"))
-                .roles("ADMIN");
+                .withUser(user)
+                .password(passwordEncoder().encode(new String(Base64.getDecoder().decode(password))))
+                .roles(roles);
     }
 
     @Bean
