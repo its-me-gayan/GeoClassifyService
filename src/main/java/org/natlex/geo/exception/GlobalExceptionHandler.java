@@ -132,7 +132,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
     @ExceptionHandler(Exception.class)
     public ResponseEntity<GenericResponse> handleCommonException(Exception ex){
-        ex.printStackTrace();
         GenericResponse requestProcessingFailed = responseGenerator.generateErrorExceptionResponse(
                 ResponseMessages.REQUEST_PROC_FAILED,
                 ex.getLocalizedMessage(),

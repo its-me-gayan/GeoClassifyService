@@ -3,6 +3,7 @@ package org.natlex.geo.helper;
 import org.natlex.geo.dto.GeologicalClassResponseDto;
 import org.natlex.geo.dto.SectionResponse;
 import org.natlex.geo.dto.generic.GenericResponse;
+import org.natlex.geo.util.ResponseCode;
 import org.natlex.geo.util.ResponseMessages;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -24,7 +25,7 @@ public class ResponseGenerator {
     public GenericResponse generateSuccessResponse(Object data , String responseMessageDescription,HttpStatus status){
         return GenericResponse.builder()
                 .timestamp(LocalDateTime.now())
-                .responseCode("000")
+                .responseCode(ResponseCode.SUCCESS)
                 .responseMessage(ResponseMessages.OPERATION_EXECUTED)
                 .responseDescription(responseMessageDescription)
                 .data(data)
@@ -46,7 +47,7 @@ public class ResponseGenerator {
                 .responseDescription(responseMessageDescription)
                 .responseMessage(responseMessage)
                 .isSuccess(false)
-                .responseCode("999")
+                .responseCode(ResponseCode.COMMON_FAILED)
                 .timestamp(LocalDateTime.now())
                 .httpStatusCode(status.value())
                 .build();
