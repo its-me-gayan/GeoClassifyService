@@ -16,13 +16,11 @@ import org.natlex.geo.entity.ExportJob;
 import org.natlex.geo.entity.ImportJob;
 import org.natlex.geo.exception.FileExportFailedException;
 import org.natlex.geo.exception.ValidationFailedException;
-import org.natlex.geo.handler.FileHandler;
-import org.natlex.geo.helper.EntityToDtoMapper;
-import org.natlex.geo.helper.ResponseGenerator;
-import org.natlex.geo.repository.ExportJobRepository;
-import org.natlex.geo.repository.ImportJobRepository;
-import org.natlex.geo.repository.SectionRepository;
-import org.natlex.geo.service.ImportExportAsyncService;
+import org.natlex.geo.helper.impl.EntityToDtoMapper;
+import org.natlex.geo.helper.impl.ResponseGenerator;
+import org.natlex.geo.repository.IExportJobRepository;
+import org.natlex.geo.repository.IImportJobRepository;
+import org.natlex.geo.service.IExportImportAsyncService;
 import org.natlex.geo.util.JobStatus;
 import org.springframework.http.HttpStatus;
 
@@ -30,7 +28,6 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -44,22 +41,22 @@ import static org.junit.jupiter.api.Assertions.*;
 class ImportExportServiceImplTest {
 
     @Mock
-    private  ImportJobRepository importJobRepository;
+    private IImportJobRepository importJobRepository;
 
     @Mock
-    private  ExportJobRepository exportJobRepository;
+    private IExportJobRepository exportJobRepository;
 
     @Spy
-    private  ImportExportAsyncService importExportAsyncService;
+    private IExportImportAsyncService importExportAsyncService;
 
     @Spy
-    private  ResponseGenerator responseGenerator;
+    private ResponseGenerator responseGenerator;
 
     @Spy
     private  EntityToDtoMapper entityToDtoMapper;
 
     @InjectMocks
-    private ImportExportServiceImpl importExportService;
+    private ExportImportServiceImpl importExportService;
    private ExportJob exportJob;
    private ImportJob importJob;
     @BeforeEach

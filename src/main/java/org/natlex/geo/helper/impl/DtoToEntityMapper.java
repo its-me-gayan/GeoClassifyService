@@ -1,4 +1,4 @@
-package org.natlex.geo.helper;
+package org.natlex.geo.helper.impl;
 
 import org.apache.poi.util.StringUtil;
 import org.natlex.geo.dto.GeologicalClassRequestDto;
@@ -6,6 +6,7 @@ import org.natlex.geo.dto.GeologicalClassUpdateRequest;
 import org.natlex.geo.dto.SectionRequest;
 import org.natlex.geo.entity.GeologicalClass;
 import org.natlex.geo.entity.Section;
+import org.natlex.geo.helper.IDtoToEntityMapper;
 import org.natlex.geo.util.Status;
 import org.natlex.geo.util.ValidationUtils;
 import org.springframework.stereotype.Component;
@@ -22,7 +23,7 @@ import java.util.Objects;
  * Time: 11:25 PM
  */
 @Component
-public class DtoToEntityMapper {
+public class DtoToEntityMapper implements IDtoToEntityMapper {
 
     public GeologicalClass mapGeologicalClassDtoToEntity(GeologicalClassRequestDto geologicalClassRequest){
        return GeologicalClass.builder()

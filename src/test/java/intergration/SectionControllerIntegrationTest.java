@@ -9,11 +9,11 @@ import org.natlex.geo.GeoClassifyServiceRunner;
 import org.natlex.geo.dto.SectionRequest;
 import org.natlex.geo.dto.generic.GenericRequest;
 import org.natlex.geo.entity.Section;
-import org.natlex.geo.helper.DtoToEntityMapper;
-import org.natlex.geo.helper.EntityToDtoMapper;
-import org.natlex.geo.helper.ResponseGenerator;
-import org.natlex.geo.repository.SectionRepository;
-import org.natlex.geo.service.SectionService;
+import org.natlex.geo.helper.impl.DtoToEntityMapper;
+import org.natlex.geo.helper.impl.EntityToDtoMapper;
+import org.natlex.geo.helper.impl.ResponseGenerator;
+import org.natlex.geo.repository.ISectionRepository;
+import org.natlex.geo.service.ISectionService;
 import org.natlex.geo.util.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -46,9 +46,9 @@ class SectionControllerIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
-    private SectionService sectionService;
+    private ISectionService sectionService;
     @MockBean
-    private SectionRepository sectionRepository;
+    private ISectionRepository sectionRepository;
     @Autowired
     private ObjectMapper objectMapper;
     @Spy

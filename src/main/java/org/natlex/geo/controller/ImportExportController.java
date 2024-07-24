@@ -8,9 +8,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.natlex.geo.dto.ExportJobResultDto;
 import org.natlex.geo.dto.JobDetailResponseDto;
-import org.natlex.geo.dto.SectionResponse;
 import org.natlex.geo.dto.generic.GenericResponse;
-import org.natlex.geo.service.ImportExportService;
+import org.natlex.geo.service.IExportImportService;
 import org.natlex.geo.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,7 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ImportExportController {
-private final ImportExportService importExportService;
+private final IExportImportService importExportService;
 
 
     /**

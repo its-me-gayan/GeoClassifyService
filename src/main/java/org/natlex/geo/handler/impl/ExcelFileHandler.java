@@ -9,18 +9,16 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.natlex.geo.entity.GeologicalClass;
 import org.natlex.geo.entity.Section;
 import org.natlex.geo.exception.ValidationFailedException;
-import org.natlex.geo.handler.FileHandler;
-import org.natlex.geo.helper.DtoToEntityMapper;
-import org.natlex.geo.repository.GeoLogicalClassRepository;
-import org.natlex.geo.repository.SectionRepository;
+import org.natlex.geo.handler.IFileHandler;
+import org.natlex.geo.helper.impl.DtoToEntityMapper;
+import org.natlex.geo.repository.IGeoLogicalClassRepository;
+import org.natlex.geo.repository.ISectionRepository;
 import org.natlex.geo.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,10 +34,10 @@ import java.util.Objects;
 @Component
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Log4j2
-public class ExcelFileHandler implements FileHandler {
+public class ExcelFileHandler implements IFileHandler {
 
-    private final SectionRepository sectionRepository;
-    private final GeoLogicalClassRepository geoLogicalClassRepository;
+    private final ISectionRepository sectionRepository;
+    private final IGeoLogicalClassRepository geoLogicalClassRepository;
     private final DtoToEntityMapper dtoToEntityMapper;
 
     @Override

@@ -7,14 +7,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import org.natlex.geo.dto.SectionRequest;
 import org.natlex.geo.dto.SectionResponse;
 import org.natlex.geo.dto.SectionUpdateRequest;
 import org.natlex.geo.dto.generic.GenericRequest;
 import org.natlex.geo.dto.generic.GenericResponse;
-import org.natlex.geo.service.SectionService;
+import org.natlex.geo.service.ISectionService;
 import org.natlex.geo.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +33,7 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 public class SectionController {
 
-    private final SectionService sectionService;
+    private final ISectionService sectionService;
 
     /**
      * Endpoint to add a new section with or without geological classes.

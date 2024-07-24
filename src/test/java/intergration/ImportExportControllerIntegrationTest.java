@@ -6,12 +6,12 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.natlex.geo.GeoClassifyServiceRunner;
 import org.natlex.geo.entity.ExportJob;
-import org.natlex.geo.helper.EntityToDtoMapper;
-import org.natlex.geo.helper.ResponseGenerator;
-import org.natlex.geo.repository.ExportJobRepository;
-import org.natlex.geo.repository.ImportJobRepository;
-import org.natlex.geo.service.ImportExportAsyncService;
-import org.natlex.geo.service.ImportExportService;
+import org.natlex.geo.helper.impl.EntityToDtoMapper;
+import org.natlex.geo.helper.impl.ResponseGenerator;
+import org.natlex.geo.repository.IExportJobRepository;
+import org.natlex.geo.repository.IImportJobRepository;
+import org.natlex.geo.service.IExportImportAsyncService;
+import org.natlex.geo.service.IExportImportService;
 import org.natlex.geo.util.JobStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -39,13 +39,13 @@ public class ImportExportControllerIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
-    private ImportJobRepository importJobRepository;
+    private IImportJobRepository importJobRepository;
 
     @MockBean
-    private ExportJobRepository exportJobRepository;
+    private IExportJobRepository exportJobRepository;
 
     @Spy
-    private ImportExportAsyncService importExportAsyncService;
+    private IExportImportAsyncService importExportAsyncService;
 
     @Spy
     private ResponseGenerator responseGenerator;
@@ -54,7 +54,7 @@ public class ImportExportControllerIntegrationTest {
     private EntityToDtoMapper entityToDtoMapper;
 
     @Autowired
-    private ImportExportService importExportService;
+    private IExportImportService importExportService;
 
     @Test
     void test_DownloadExportedFile_200_Success() throws Exception {

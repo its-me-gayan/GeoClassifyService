@@ -17,10 +17,10 @@ import org.natlex.geo.entity.Section;
 import org.natlex.geo.exception.EntityExistException;
 import org.natlex.geo.exception.NoContentFoundException;
 import org.natlex.geo.exception.ValidationFailedException;
-import org.natlex.geo.helper.DtoToEntityMapper;
-import org.natlex.geo.helper.EntityToDtoMapper;
-import org.natlex.geo.helper.ResponseGenerator;
-import org.natlex.geo.repository.GeoLogicalClassRepository;
+import org.natlex.geo.helper.impl.DtoToEntityMapper;
+import org.natlex.geo.helper.impl.EntityToDtoMapper;
+import org.natlex.geo.helper.impl.ResponseGenerator;
+import org.natlex.geo.repository.IGeoLogicalClassRepository;
 import org.natlex.geo.util.Status;
 import org.springframework.http.HttpStatus;
 
@@ -41,9 +41,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class GeologicalClassServiceImplTest {
 
     @Mock
-    private GeoLogicalClassRepository geoLogicalClassRepository;
+    private IGeoLogicalClassRepository geoLogicalClassRepository;
     @Spy
-    private  ResponseGenerator responseGenerator;
+    private ResponseGenerator responseGenerator;
 
     @Spy
     private  EntityToDtoMapper entityToDtoMapper;

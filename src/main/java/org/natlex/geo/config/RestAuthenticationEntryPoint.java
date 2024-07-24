@@ -6,7 +6,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.natlex.geo.dto.generic.GenericResponse;
-import org.natlex.geo.helper.ResponseGenerator;
+import org.natlex.geo.helper.IResponseGenerator;
+import org.natlex.geo.helper.impl.ResponseGenerator;
 import org.natlex.geo.util.ResponseMessages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,13 +26,12 @@ import java.io.IOException;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
-    private final ResponseGenerator responseGenerator;
+    private final IResponseGenerator responseGenerator;
     private final ObjectMapper objectMapper;
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, org.springframework.security.core.AuthenticationException authException) throws IOException, ServletException {
-//        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
         GenericResponse genericResponse = responseGenerator
-                .generateErrorExceptionResponse(
+                .generateErrorResponse(
                         ResponseMessages.REQUEST_PROC_FAILED,
                         authException.getLocalizedMessage(),
                         HttpStatus.UNAUTHORIZED);
@@ -39,6 +39,5 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");
         response.getWriter().write(objectMapper.writeValueAsString(genericResponse));
-
     }
 }

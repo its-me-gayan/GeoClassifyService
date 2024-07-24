@@ -17,7 +17,7 @@ import java.util.Optional;
  * Time: 11:14 AM
  */
 @Repository
-public interface GeoLogicalClassRepository extends JpaRepository<GeologicalClass ,String> {
+public interface IGeoLogicalClassRepository extends JpaRepository<GeologicalClass ,String> {
     @Query("SELECT CASE WHEN COUNT(gc) > 0 THEN TRUE ELSE FALSE END FROM GeologicalClass gc WHERE gc.code = :code AND gc.status <> :status")
     boolean existsGeologicalClassByCodeAndStatusNot(@Param("code") String code, @Param("status") Status status);
     Optional<GeologicalClass> findGeologicalClassByCodeAndStatusNot(String code, Status status);

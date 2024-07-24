@@ -1,4 +1,4 @@
-package org.natlex.geo.helper;
+package org.natlex.geo.helper.impl;
 
 import org.natlex.geo.dto.GeologicalClassResponseDto;
 import org.natlex.geo.dto.JobDetailResponseDto;
@@ -7,6 +7,7 @@ import org.natlex.geo.entity.ExportJob;
 import org.natlex.geo.entity.GeologicalClass;
 import org.natlex.geo.entity.ImportJob;
 import org.natlex.geo.entity.Section;
+import org.natlex.geo.helper.IEntityToDtoMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
  */
 
 @Component
-public class EntityToDtoMapper {
+public class EntityToDtoMapper implements IEntityToDtoMapper {
 
     public SectionResponse mapSectionToSectionResponseDto(Section section){
         return SectionResponse.builder()

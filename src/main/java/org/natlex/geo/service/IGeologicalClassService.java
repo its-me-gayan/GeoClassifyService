@@ -11,7 +11,7 @@ import org.natlex.geo.dto.generic.GenericResponse;
  * Time: 2:37 PM
  * Interface defining the contract for geological class-related operations.
  */
-public interface GeologicalClassService {
+public interface IGeologicalClassService {
 
     /**
      * Adds a new geological class.

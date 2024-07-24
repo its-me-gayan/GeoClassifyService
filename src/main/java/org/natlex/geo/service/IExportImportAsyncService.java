@@ -1,7 +1,5 @@
 package org.natlex.geo.service;
 
-import org.natlex.geo.dto.generic.GenericResponse;
-
 import java.io.InputStream;
 
 /**
@@ -11,7 +9,7 @@ import java.io.InputStream;
  * Time: 6:21 PM
  * Interface defining the contract for asynchronous import and export operations.
  */
-public interface ImportExportAsyncService {
+public interface IExportImportAsyncService {
 
     /**
      * Creates and submits an asynchronous job to import sections from an Excel file.

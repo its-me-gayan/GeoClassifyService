@@ -12,17 +12,14 @@ import lombok.extern.log4j.Log4j2;
 import org.natlex.geo.dto.GeologicalClassRequestDto;
 import org.natlex.geo.dto.GeologicalClassResponseDto;
 import org.natlex.geo.dto.GeologicalClassUpdateRequest;
-import org.natlex.geo.dto.SectionResponse;
 import org.natlex.geo.dto.generic.GenericRequest;
 import org.natlex.geo.dto.generic.GenericResponse;
-import org.natlex.geo.service.GeologicalClassService;
+import org.natlex.geo.service.IGeologicalClassService;
 import org.natlex.geo.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 
 /**
  * Author: Gayan Sanjeewa
@@ -39,7 +36,7 @@ import java.util.ArrayList;
 @Log4j2
 public class GeologicalClassController {
 
-    private final GeologicalClassService geologicalClassService;
+    private final IGeologicalClassService IGeologicalClassService;
 
     /**
      * Endpoint to add a new geological class.
@@ -57,7 +54,7 @@ public class GeologicalClassController {
     @PostMapping("/geo-log")
     public ResponseEntity<GenericResponse> addGeologicalClass(@Valid @RequestBody GenericRequest<GeologicalClassRequestDto> request) throws Exception {
         return ResponseUtil
-                .buildResponse(geologicalClassService.addGeologicalClass(request.data()));
+                .buildResponse(IGeologicalClassService.addGeologicalClass(request.data()));
     }
 
     /**
@@ -74,7 +71,7 @@ public class GeologicalClassController {
     @GetMapping("/geo-log")
     public ResponseEntity<GenericResponse> getAllGeologicalClass() throws Exception {
         return ResponseUtil
-                .buildResponse(geologicalClassService.getAllGeologicalClass());
+                .buildResponse(IGeologicalClassService.getAllGeologicalClass());
     }
 
     /**
@@ -92,7 +89,7 @@ public class GeologicalClassController {
     @PatchMapping("/geo-log")
     public ResponseEntity<GenericResponse> updateGeologicalClass(@Valid @RequestBody GenericRequest<GeologicalClassUpdateRequest> genericRequest) throws Exception {
         return ResponseUtil
-                .buildResponse(geologicalClassService.updateGeologicalClass(genericRequest.data()));
+                .buildResponse(IGeologicalClassService.updateGeologicalClass(genericRequest.data()));
     }
 
     /**
@@ -110,7 +107,7 @@ public class GeologicalClassController {
     @DeleteMapping("/geo-log/{code}")
     public ResponseEntity<GenericResponse> deleteGeologicalClass(@Valid @PathVariable(value = "code") @NotBlank String code) throws Exception {
         return ResponseUtil
-                .buildResponse(geologicalClassService.deleteGeologicalClass(code));
+                .buildResponse(IGeologicalClassService.deleteGeologicalClass(code));
     }
 
     /**
@@ -128,6 +125,6 @@ public class GeologicalClassController {
     @GetMapping("/geo-log/by-code")
     public ResponseEntity<GenericResponse> getGeologicalClassByCode(@Valid @RequestParam("code") @NotBlank String code) throws Exception {
         return ResponseUtil
-                .buildResponse( geologicalClassService.getGeologicalClassByCode(code));
+                .buildResponse( IGeologicalClassService.getGeologicalClassByCode(code));
     }
 }

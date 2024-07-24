@@ -12,7 +12,7 @@ import java.io.InputStream;
  * Time: 6:21 PM
  *  Interface defining the contract for import and export operations.
  */
-public interface ImportExportService {
+public interface IExportImportService {
 
     /**
      * Imports sections from an Excel file.

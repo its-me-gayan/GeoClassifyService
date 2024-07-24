@@ -2,20 +2,17 @@ package org.natlex.geo.service.impl;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.natlex.geo.dto.*;
 import org.natlex.geo.dto.generic.GenericResponse;
 import org.natlex.geo.entity.GeologicalClass;
 import org.natlex.geo.entity.Section;
-import org.natlex.geo.exception.EntityExistException;
 import org.natlex.geo.exception.NoContentFoundException;
-import org.natlex.geo.exception.ValidationFailedException;
-import org.natlex.geo.helper.DtoToEntityMapper;
-import org.natlex.geo.helper.EntityToDtoMapper;
-import org.natlex.geo.helper.ResponseGenerator;
-import org.natlex.geo.repository.GeoLogicalClassRepository;
-import org.natlex.geo.repository.SectionRepository;
-import org.natlex.geo.service.SectionService;
+import org.natlex.geo.helper.IDtoToEntityMapper;
+import org.natlex.geo.helper.IEntityToDtoMapper;
+import org.natlex.geo.helper.IResponseGenerator;
+import org.natlex.geo.repository.IGeoLogicalClassRepository;
+import org.natlex.geo.repository.ISectionRepository;
+import org.natlex.geo.service.ISectionService;
 import org.natlex.geo.util.ExceptionMessages;
 import org.natlex.geo.util.ResponseMessages;
 import org.natlex.geo.util.Status;
@@ -31,7 +28,6 @@ import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 /**
@@ -42,13 +38,13 @@ import java.util.stream.Collectors;
  */
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class SectionServiceImpl implements SectionService {
+public class SectionServiceImpl implements ISectionService {
 
-    private final SectionRepository sectionRepository;
-    private final GeoLogicalClassRepository geoLogicalClassRepository;
-    private final ResponseGenerator responseGenerator;
-    private final EntityToDtoMapper entityToDtoMapper;
-    private final DtoToEntityMapper dtoToEntityMapper;
+    private final ISectionRepository sectionRepository;
+    private final IGeoLogicalClassRepository geoLogicalClassRepository;
+    private final IResponseGenerator responseGenerator;
+    private final IEntityToDtoMapper entityToDtoMapper;
+    private final IDtoToEntityMapper dtoToEntityMapper;
 
     @Transactional(isolation = Isolation.SERIALIZABLE,propagation = Propagation.REQUIRED)
     @Override

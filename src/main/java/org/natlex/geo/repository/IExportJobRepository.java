@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
  * Time: 9:26 PM
  */
 @Repository
-public interface ExportJobRepository extends JpaRepository<ExportJob , Long> {
+public interface IExportJobRepository extends JpaRepository<ExportJob , Long> {
 }

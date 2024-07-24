@@ -3,24 +3,15 @@ package org.natlex.geo.service.impl;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.apache.commons.lang3.math.NumberUtils;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.natlex.geo.entity.ExportJob;
-import org.natlex.geo.entity.GeologicalClass;
 import org.natlex.geo.entity.ImportJob;
 import org.natlex.geo.entity.Section;
 import org.natlex.geo.exception.ValidationFailedException;
-import org.natlex.geo.handler.FileHandler;
-import org.natlex.geo.helper.DtoToEntityMapper;
-import org.natlex.geo.helper.EntityToDtoMapper;
-import org.natlex.geo.repository.ExportJobRepository;
-import org.natlex.geo.repository.GeoLogicalClassRepository;
-import org.natlex.geo.repository.ImportJobRepository;
-import org.natlex.geo.repository.SectionRepository;
-import org.natlex.geo.service.ImportExportAsyncService;
+import org.natlex.geo.handler.IFileHandler;
+import org.natlex.geo.repository.IExportJobRepository;
+import org.natlex.geo.repository.IImportJobRepository;
+import org.natlex.geo.repository.ISectionRepository;
+import org.natlex.geo.service.IExportImportAsyncService;
 import org.natlex.geo.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -29,11 +20,9 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import java.io.*;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -45,11 +34,11 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Log4j2
-public class ImportExportAsyncServiceImpl implements ImportExportAsyncService {
-    private final ImportJobRepository importJobRepository;
-    private final ExportJobRepository exportJobRepository;
-    private final SectionRepository sectionRepository;
-    private final FileHandler fileHandler;
+public class ExportImportAsyncServiceImpl implements IExportImportAsyncService {
+    private final IImportJobRepository importJobRepository;
+    private final IExportJobRepository exportJobRepository;
+    private final ISectionRepository sectionRepository;
+    private final IFileHandler fileHandler;
 
 
     @Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)

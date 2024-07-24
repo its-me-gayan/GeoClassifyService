@@ -11,7 +11,7 @@ import org.natlex.geo.dto.generic.GenericResponse;
  * Time: 11:00 PM
  * Interface defining the contract for section-related operations.
  */
-public interface SectionService {
+public interface ISectionService {
 
     /**
      * Adds a new section.

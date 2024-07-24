@@ -14,9 +14,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.natlex.geo.entity.GeologicalClass;
 import org.natlex.geo.entity.Section;
 import org.natlex.geo.exception.ValidationFailedException;
-import org.natlex.geo.helper.DtoToEntityMapper;
-import org.natlex.geo.repository.GeoLogicalClassRepository;
-import org.natlex.geo.repository.SectionRepository;
+import org.natlex.geo.helper.impl.DtoToEntityMapper;
+import org.natlex.geo.repository.IGeoLogicalClassRepository;
+import org.natlex.geo.repository.ISectionRepository;
 import org.natlex.geo.util.Status;
 
 import java.io.*;
@@ -35,9 +35,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class ExcelFileHandlerTest {
 
     @Mock
-    private  SectionRepository sectionRepository;
+    private ISectionRepository sectionRepository;
     @Mock
-    private  GeoLogicalClassRepository geoLogicalClassRepository;
+    private IGeoLogicalClassRepository geoLogicalClassRepository;
     @Spy
     private  DtoToEntityMapper dtoToEntityMapper;
 

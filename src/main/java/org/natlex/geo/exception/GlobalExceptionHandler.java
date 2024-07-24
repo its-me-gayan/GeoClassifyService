@@ -4,7 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.natlex.geo.dto.generic.GenericResponse;
-import org.natlex.geo.helper.ResponseGenerator;
+import org.natlex.geo.helper.impl.ResponseGenerator;
 import org.natlex.geo.util.ResponseMessages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -50,7 +49,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             errorList.add("parameter "+constraintViolation.getPropertyPath().toString()+" "+ (StringUtils.hasText(constraintViolation.getMessage()) ?constraintViolation.getMessage() : null));
         });
 
-        GenericResponse requestProcessingFailed = responseGenerator.generateErrorExceptionResponse(
+        GenericResponse requestProcessingFailed = responseGenerator.generateErrorResponse(
                 ResponseMessages.REQUEST_PROC_FAILED,
                 ResponseMessages.REQUEST_PROC_FAILED_DUE_VAL,
                 HttpStatus.BAD_REQUEST,
@@ -67,7 +66,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 errorList.add("field "+error.getField()+" "+error.getDefaultMessage())
         );
 
-        GenericResponse requestProcessingFailed = responseGenerator.generateErrorExceptionResponse(
+        GenericResponse requestProcessingFailed = responseGenerator.generateErrorResponse(
                 ResponseMessages.REQUEST_PROC_FAILED,
                 ResponseMessages.REQUEST_PROC_FAILED_DUE_VAL,
                 HttpStatus.BAD_REQUEST,
@@ -78,7 +77,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<GenericResponse> handleEntityNotFountException(EntityNotFoundException ex){
-        GenericResponse requestProcessingFailed = responseGenerator.generateErrorExceptionResponse(
+        GenericResponse requestProcessingFailed = responseGenerator.generateErrorResponse(
                 ResponseMessages.REQUEST_PROC_FAILED,
                 ex.getLocalizedMessage(),
                 HttpStatus.BAD_REQUEST
@@ -88,7 +87,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(EntityExistException.class)
     public ResponseEntity<GenericResponse> handleEntityExistException(EntityExistException ex){
-        GenericResponse requestProcessingFailed = responseGenerator.generateErrorExceptionResponse(
+        GenericResponse requestProcessingFailed = responseGenerator.generateErrorResponse(
                 ResponseMessages.REQUEST_PROC_FAILED,
                 ex.getLocalizedMessage(),
                 HttpStatus.BAD_REQUEST
@@ -103,7 +102,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ValidationFailedException.class)
     public ResponseEntity<GenericResponse> handleValidationFailedException(ValidationFailedException ex){
-        GenericResponse requestProcessingFailed = responseGenerator.generateErrorExceptionResponse(
+        GenericResponse requestProcessingFailed = responseGenerator.generateErrorResponse(
                 ResponseMessages.REQUEST_PROC_FAILED,
                 ex.getLocalizedMessage(),
                 HttpStatus.BAD_REQUEST
@@ -113,7 +112,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(FileExportFailedException.class)
     public ResponseEntity<GenericResponse> handleValidationFailedException(FileExportFailedException ex){
-        GenericResponse requestProcessingFailed = responseGenerator.generateErrorExceptionResponse(
+        GenericResponse requestProcessingFailed = responseGenerator.generateErrorResponse(
                 ResponseMessages.REQUEST_PROC_FAILED,
                 ex.getLocalizedMessage(),
                 HttpStatus.BAD_GATEWAY
@@ -123,7 +122,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<GenericResponse> handleAuthenticationException(AuthenticationException ex){
-        GenericResponse requestProcessingFailed = responseGenerator.generateErrorExceptionResponse(
+        GenericResponse requestProcessingFailed = responseGenerator.generateErrorResponse(
                 ResponseMessages.REQUEST_PROC_FAILED,
                 ex.getLocalizedMessage(),
                 HttpStatus.UNAUTHORIZED
@@ -132,7 +131,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
     @ExceptionHandler(Exception.class)
     public ResponseEntity<GenericResponse> handleCommonException(Exception ex){
-        GenericResponse requestProcessingFailed = responseGenerator.generateErrorExceptionResponse(
+        GenericResponse requestProcessingFailed = responseGenerator.generateErrorResponse(
                 ResponseMessages.REQUEST_PROC_FAILED,
                 ex.getLocalizedMessage(),
                 HttpStatus.BAD_REQUEST

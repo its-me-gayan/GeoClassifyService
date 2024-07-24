@@ -3,18 +3,17 @@ package org.natlex.geo.service.impl;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.natlex.geo.dto.ExportJobResultDto;
-import org.natlex.geo.dto.JobDetailResponseDto;
 import org.natlex.geo.dto.generic.GenericResponse;
 import org.natlex.geo.entity.ExportJob;
 import org.natlex.geo.entity.ImportJob;
 import org.natlex.geo.exception.FileExportFailedException;
 import org.natlex.geo.exception.ValidationFailedException;
-import org.natlex.geo.helper.EntityToDtoMapper;
-import org.natlex.geo.helper.ResponseGenerator;
-import org.natlex.geo.repository.ExportJobRepository;
-import org.natlex.geo.repository.ImportJobRepository;
-import org.natlex.geo.service.ImportExportAsyncService;
-import org.natlex.geo.service.ImportExportService;
+import org.natlex.geo.helper.IEntityToDtoMapper;
+import org.natlex.geo.helper.IResponseGenerator;
+import org.natlex.geo.repository.IExportJobRepository;
+import org.natlex.geo.repository.IImportJobRepository;
+import org.natlex.geo.service.IExportImportAsyncService;
+import org.natlex.geo.service.IExportImportService;
 import org.natlex.geo.util.ExceptionMessages;
 import org.natlex.geo.util.JobStatus;
 import org.natlex.geo.util.ResponseMessages;
@@ -35,13 +34,13 @@ import java.util.Objects;
  */
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class ImportExportServiceImpl implements ImportExportService {
+public class ExportImportServiceImpl implements IExportImportService {
 
-    private final ImportJobRepository importJobRepository;
-    private final ExportJobRepository exportJobRepository;
-    private final ImportExportAsyncService importExportAsyncService;
-    private final ResponseGenerator responseGenerator;
-    private final EntityToDtoMapper entityToDtoMapper;
+    private final IImportJobRepository importJobRepository;
+    private final IExportJobRepository exportJobRepository;
+    private final IExportImportAsyncService importExportAsyncService;
+    private final IResponseGenerator responseGenerator;
+    private final IEntityToDtoMapper entityToDtoMapper;
     @Override
     public GenericResponse importFile(InputStream inputStream,String originalName) throws Exception {
 

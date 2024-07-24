@@ -1,8 +1,6 @@
 package org.natlex.geo.service.impl;
 
 import jakarta.persistence.EntityNotFoundException;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,14 +15,11 @@ import org.natlex.geo.dto.generic.GenericResponse;
 import org.natlex.geo.entity.Section;
 import org.natlex.geo.exception.NoContentFoundException;
 import org.natlex.geo.exception.ValidationFailedException;
-import org.natlex.geo.helper.DtoToEntityMapper;
-import org.natlex.geo.helper.EntityToDtoMapper;
-import org.natlex.geo.helper.ResponseGenerator;
-import org.natlex.geo.repository.GeoLogicalClassRepository;
-import org.natlex.geo.repository.SectionRepository;
-import org.natlex.geo.service.SectionService;
+import org.natlex.geo.helper.impl.DtoToEntityMapper;
+import org.natlex.geo.helper.impl.EntityToDtoMapper;
+import org.natlex.geo.helper.impl.ResponseGenerator;
+import org.natlex.geo.repository.ISectionRepository;
 import org.natlex.geo.util.Status;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
@@ -44,10 +39,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class SectionServiceImplTest {
 
     @Mock
-    private SectionRepository sectionRepository;
+    private ISectionRepository sectionRepository;
 
     @Spy
-    private  ResponseGenerator responseGenerator;
+    private ResponseGenerator responseGenerator;
 
     @Spy
     private  EntityToDtoMapper entityToDtoMapper;

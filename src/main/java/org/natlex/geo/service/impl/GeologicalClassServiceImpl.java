@@ -9,11 +9,11 @@ import org.natlex.geo.entity.GeologicalClass;
 import org.natlex.geo.exception.EntityExistException;
 import org.natlex.geo.exception.NoContentFoundException;
 import org.natlex.geo.exception.ValidationFailedException;
-import org.natlex.geo.helper.DtoToEntityMapper;
-import org.natlex.geo.helper.EntityToDtoMapper;
-import org.natlex.geo.helper.ResponseGenerator;
-import org.natlex.geo.repository.GeoLogicalClassRepository;
-import org.natlex.geo.service.GeologicalClassService;
+import org.natlex.geo.helper.IDtoToEntityMapper;
+import org.natlex.geo.helper.IEntityToDtoMapper;
+import org.natlex.geo.helper.IResponseGenerator;
+import org.natlex.geo.repository.IGeoLogicalClassRepository;
+import org.natlex.geo.service.IGeologicalClassService;
 import org.natlex.geo.util.ExceptionMessages;
 import org.natlex.geo.util.ResponseMessages;
 import org.natlex.geo.util.Status;
@@ -22,11 +22,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Author: Gayan Sanjeewa
@@ -37,12 +35,12 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class GeologicalClassServiceImpl implements GeologicalClassService {
+public class GeologicalClassServiceImpl implements IGeologicalClassService {
 
-    private final GeoLogicalClassRepository geoLogicalClassRepository;
-    private final ResponseGenerator responseGenerator;
-    private final EntityToDtoMapper entityToDtoMapper;
-    private final DtoToEntityMapper dtoToEntityMapper;
+    private final IGeoLogicalClassRepository geoLogicalClassRepository;
+    private final IResponseGenerator responseGenerator;
+    private final IEntityToDtoMapper entityToDtoMapper;
+    private final IDtoToEntityMapper dtoToEntityMapper;
     @Override
     public GenericResponse addGeologicalClass(GeologicalClassRequestDto request) throws Exception {
 

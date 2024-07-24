@@ -16,7 +16,7 @@ import java.util.Optional;
  * Time: 10:59 PM
  */
 @Repository
-public interface SectionRepository extends JpaRepository<Section , String> {
+public interface ISectionRepository extends JpaRepository<Section , String> {
 
     Optional<Section> findSectionByNameAndStatusNot(String name,Status status);
     Optional<Section> findSectionBySectionIdAndStatusNot(Integer sectionId,Status status);
